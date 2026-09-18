@@ -1,0 +1,23 @@
+[mist]
+; Mist cloud API base URL - matches whichever region your org's dashboard is on
+; (check the hostname of manage.<region>.mist.com you log into):
+;   US:   https://api.mist.com/api/v1
+;   EU:   https://api.eu.mist.com/api/v1
+;   Other regions follow https://api.<region>.mist.com/api/v1
+api_base = https://api.eu.mist.com/api/v1
+
+; Org ID - found in the Mist dashboard URL or via GET /api/v1/self
+org_id = YOUR_ORG_ID_HERE
+
+; API token - create one under Org Settings > API Tokens in the Mist dashboard
+api_token = YOUR_API_TOKEN_HERE
+
+[output]
+; Where the generated .xlsx report is saved. ~ is expanded to your home directory.
+directory = ~
+
+[thresholds]
+; Hour thresholds to check for "no 5GHz client" activity, comma-separated.
+; e.g. "24,48" checks both "no clients in the last 24h" and "no clients in the last 48h".
+; Can still be overridden per-run with --hours on the command line.
+hours = 24,48

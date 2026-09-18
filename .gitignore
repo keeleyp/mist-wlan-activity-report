@@ -1,0 +1,6 @@
+mist_wlan_activity_report.ini
+*.xlsx
+*.log
+__pycache__/
+*.pyc
+.DS_Store
