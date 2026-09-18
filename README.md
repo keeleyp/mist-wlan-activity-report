@@ -55,8 +55,9 @@ Saved as `Mist_WLAN_Activity_Report_<OrgName>_<timestamp>.xlsx`, with:
 |---|---|
 | All APs | One row per AP: identity/state, uptime, ETH0 + Band 5 radio stats, published SSIDs (all bands and 5GHz-only), and a Yes/No column per activity threshold |
 | No 5GHz Clients - Nh | One sheet per threshold, listing only the APs with zero 5GHz clients in that window |
-| Quiet in ALL Thresholds | APs with no 5GHz client across *every* threshold checked |
-| Possible Issues | Subset of "Quiet in ALL Thresholds" that also publish >=1 5GHz SSID — the APs worth investigating first |
+| Quiet in ALL Thresholds | APs with no 5GHz client across *every* threshold checked (includes disconnected APs, for which that's expected) |
+| Possible Issues | The actionable subset: **connected** APs, publishing >=1 5GHz SSID, with no 5GHz client across every threshold. Disconnected APs are excluded here — they trivially have no clients, which isn't an RF/coverage issue |
+| No WLANs Published | APs with **zero** SSIDs reaching them on any band — a config/coverage gap (no WLAN Template resolves to this AP's site + Device Profile), independent of client activity |
 | AP x SSID Detail | One row per (AP, SSID) pair, with WLAN Template name, configured bands, and per-band rateset |
 
 Every AP-level sheet includes: Name, Site Name, Site ID, Device Profile, MAC, Serial, Model,
