@@ -57,7 +57,7 @@ Saved as `Mist_WLAN_Activity_Report_<OrgName>_<timestamp>.xlsx`, with:
 | No 5GHz Clients - Nh | One sheet per threshold, listing only the APs with zero 5GHz clients in that window |
 | Quiet in ALL Thresholds | APs with no 5GHz client across *every* threshold checked (includes disconnected APs, for which that's expected) |
 | Possible Issues | The actionable subset: **connected** APs, publishing >=1 5GHz SSID, with no 5GHz client across every threshold. Disconnected APs are excluded here — they trivially have no clients, which isn't an RF/coverage issue |
-| No WLANs Published | APs with **zero** SSIDs reaching them on any band — a config/coverage gap (no WLAN Template resolves to this AP's site + Device Profile), independent of client activity |
+| No 5GHz WLANs Published | APs with **zero SSIDs on 5GHz** — a config/coverage gap (no 5GHz-enabled WLAN Template resolves to this AP's site + Device Profile), independent of client activity. Scoped to 5GHz rather than any band, matching this report's focus |
 | AP x SSID Detail | One row per (AP, SSID) pair, with WLAN Template name, configured bands, and per-band rateset |
 
 Every AP-level sheet includes: Name, Site Name, Site ID, Device Profile, MAC, Serial, Model,

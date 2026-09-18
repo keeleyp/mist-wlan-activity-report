@@ -591,11 +591,13 @@ def main():
     quiet_connected = [r for r in quiet_all if r["Status"] == "connected"]
     possible_issues = [r for r in quiet_connected if r["Published 5GHz SSID Count"] > 0]
 
-    # No WLAN Template reaches this AP at all (any band) — a config/coverage gap, independent
+    # No WLAN Template reaches this AP on 5GHz at all — a config/coverage gap, independent
     # of whether it's ever had a client. Worth its own sheet rather than folding into
     # Possible Issues (which is specifically about the 5GHz-published-but-quiet mismatch).
-    no_wlans_published = [r for r in all_rows if r["Published SSID Count"] == 0]
-    no_wlans_connected = [r for r in no_wlans_published if r["Status"] == "connected"]
+    # Scoped to 5GHz (not "any band") since that's this report's focus — an AP can be fine
+    # on 2.4GHz/6GHz and still have a real 5GHz coverage gap.
+    no_5ghz_published = [r for r in all_rows if r["Published 5GHz SSID Count"] == 0]
+    no_5ghz_connected = [r for r in no_5ghz_published if r["Status"] == "connected"]
 
     print(f"\nCategorised: {len(all_rows)} APs total")
     for h in thresholds:
@@ -604,8 +606,8 @@ def main():
     print(f"    - of those, disconnected (expected, not an issue): {len(quiet_all) - len(quiet_connected)}")
     print(f"    - of those, connected but still quiet:             {len(quiet_connected)}")
     print(f"  Possible issues (connected, publishes >=1 5GHz SSID, no client): {len(possible_issues)}")
-    print(f"  No WLANs published at all (any band):            {len(no_wlans_published)} "
-          f"({len(no_wlans_connected)} connected, {len(no_wlans_published) - len(no_wlans_connected)} disconnected)")
+    print(f"  No 5GHz WLANs published:                          {len(no_5ghz_published)} "
+          f"({len(no_5ghz_connected)} connected, {len(no_5ghz_published) - len(no_5ghz_connected)} disconnected)")
 
     print("\nBuilding Excel spreadsheet...")
     wb = Workbook()
@@ -634,9 +636,9 @@ def main():
     write_rows(ws_issues, no_client_headers, possible_issues)
     finish_sheet(ws_issues, no_client_headers)
 
-    ws_no_wlans = wb.create_sheet("No WLANs Published")
+    ws_no_wlans = wb.create_sheet("No 5GHz WLANs Published")
     style_header(ws_no_wlans, no_client_headers, "4E342E")
-    write_rows(ws_no_wlans, no_client_headers, no_wlans_published)
+    write_rows(ws_no_wlans, no_client_headers, no_5ghz_published)
     finish_sheet(ws_no_wlans, no_client_headers)
 
     detail_headers = [
@@ -664,7 +666,7 @@ def main():
         print(f"  No 5GHz clients ({h}h):           {len(no_clients_rows[h])}")
     print(f"  Quiet in ALL thresholds:         {len(quiet_all)} ({len(quiet_all) - len(quiet_connected)} disconnected, {len(quiet_connected)} connected)")
     print(f"  Possible issues (connected, SSID, no client): {len(possible_issues)}")
-    print(f"  No WLANs published (any band):   {len(no_wlans_published)} ({len(no_wlans_connected)} connected)")
+    print(f"  No 5GHz WLANs published:         {len(no_5ghz_published)} ({len(no_5ghz_connected)} connected)")
     print(f"  AP x SSID detail rows:           {len(detail_rows)}")
     print(f"{'='*60}")
     print(f"  API calls - WLAN config:         {est_wlan_config_calls}")
